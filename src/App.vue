@@ -1,36 +1,60 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
-      <li><a href="https://gitter.im/vuejs/vue" target="_blank">Gitter Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li><a href="http://router.vuejs.org/" target="_blank">vue-router</a></li>
-      <li><a href="http://vuex.vuejs.org/" target="_blank">vuex</a></li>
-      <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
-    </ul>
+    <tareaList v-bind:tareas="tareas"></tareaList>
+    <tareaAgregar v-on:agregarTarea="agregarTarea"></tareaAgregar>
+    <pre>
+    	{{ $data || json }}
+    </pre>
   </div>
 </template>
 
 <script>
+import tareaList from './components/tarea-list.vue';
+import tareaAgregar from './components/tarea-agregar.vue';
+
 export default {
   name: 'app',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
-    }
-  }
-}
+
+  components: {
+    tareaList,
+    tareaAgregar,
+  },
+
+	data() {
+		return {
+      // Defino un objeto con tareas
+			tareas: [{
+				nombre: 'Todo A',
+				project: 'Project A',
+				done: false,
+				}, {
+				nombre: 'Todo B',
+				project: 'Project B',
+				done: true,
+				}, {
+				nombre: 'Todo C',
+				project: 'Project C',
+				done: false,
+				}, {
+				nombre: 'Todo D',
+				project: 'Project D',
+				done: false,
+				}],
+		};
+	},
+		methods: {
+      agregarTarea: function(tarea, proyecto) {
+  			if(tarea.trim() || proyecto.trim()) { //Pregunto si lo ingresado es vacío
+              	this.tareas.push({nombre: tarea, project: proyecto, done: false}) //Agrego tarea al objeto tareas
+              	} else {
+                  alert('Debe introducir un nombre para la tarea y/o proyecto')
+                  }
+  			},
+    },
+  };
 </script>
 
-<style lang="scss">
+<style>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -54,7 +78,45 @@ li {
   margin: 0 10px;
 }
 
-a {
-  color: #42b983;
+/*a {
+  color: #73AD21;
+}*/
+
+.tarea {
+	text-align: left;
+    border-radius: 25px;
+    padding: 15px;
+    width: 350px;
+}
+
+.tarea-borde-completada {
+  border: 1px solid #73AD21;
+}
+
+.tarea-borde-incompleta {
+  border: 1px solid #F6CECE;
+}
+
+.tarea-nombre {
+	font-weight: bold;
+}
+
+.tarea-proyecto{
+  color: grey;
+}
+
+.tarea-botonera {
+	text-align: right;
+  margin-bottom: 17px;
+}
+
+.tarea-done {
+  text-align: center;
+  margin:-17px;
+  border-bottom-left-radius: 25px;
+  border-bottom-right-radius: 25px;
+  /*border: 2px solid #73AD21;*/
+  height: 30px;
+  padding: 4px;
 }
 </style>
